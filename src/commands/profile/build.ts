@@ -9,7 +9,6 @@ const js2xmlparser = require('js2xmlparser');
 let sourcepath;
 
 function buildProfile(profilename) {
-  console.log(profilename);
   const profilepath = path.join(sourcepath, profilename);
   // profile
   const profilesetting = JSON.parse(fs.readFileSync(profilepath + '/' + profilename + '.json').toString());
