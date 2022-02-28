@@ -14,12 +14,14 @@ function buildLabels(sourcepath) {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
   };
   CustomLabels.labels = [];
-  if (fs.existsSync(sourcepath) {
+  if (fs.existsSync(sourcepath)) {
     fs.readdirSync(sourcepath)
+      
       .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
+      .filter((f) => f.includes('.json'))
       .forEach((file) => {
-        CustomLabels.labels.applicationVisibilities.push(
-          JSON.parse(fs.readFileSync(PermissionSetpath + '/applicationVisibilities/' + file).toString())
+        CustomLabels.labels.push(
+          JSON.parse(fs.readFileSync(sourcepath + '/' + file).toString())
         );
       });
   }
@@ -55,6 +57,7 @@ export default class LabelBuild extends SfdxCommand {
     try {
       buildLabels(sourcepath);
     } catch (err) {
+      console.log(err);
       console.log('Could not build labels');
     }
   }
