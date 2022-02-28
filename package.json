@@ -1,0 +1,102 @@
+{
+  "name": "scdx",
+  "description": "SFDX plugins designed for Smart Cloud consultants",
+  "version": "0.0.0",
+  "author": "dsl12",
+  "bugs": "https://github.com/dsl12/scdx/issues",
+  "dependencies": {
+    "@salesforce/command": "^4",
+    "@salesforce/core": "^2",
+    "@salesforce/plugin-user": "^1.7.0",
+    "@salesforce/source-deploy-retrieve": "^2.2.0",
+    "@salesforce/ts-types": "^1.5.20",
+    "chalk": "^4.1.2",
+    "csv-parser": "^2.3.2",
+    "csv-split-stream": "^1.0.2",
+    "csv-writer": "^1.6.0",
+    "js2xmlparser": "^4.0.1",
+    "salesforce-alm": "^53.6.0",
+    "tslib": "^2.1.0",
+    "tty-table": "^2.7.0"
+  },
+  "devDependencies": {
+    "@oclif/dev-cli": "^1",
+    "@oclif/plugin-help": "^3",
+    "@oclif/test": "^1",
+    "@oclif/tslint": "^3",
+    "@salesforce/dev-config": "^2",
+    "@salesforce/dev-scripts": "^0",
+    "@salesforce/prettier-config": "^0",
+    "@salesforce/ts-sinon": "^1",
+    "@types/chai": "^4",
+    "@types/jsforce": "^1.9.29",
+    "@types/mocha": "^8",
+    "@types/node": "^14.14.7",
+    "@typescript-eslint/eslint-plugin": "^4",
+    "@typescript-eslint/parser": "^4",
+    "chai": "^4",
+    "cli-table": "0.3.1",
+    "dxb": "^1.7.8",
+    "eslint": "^7",
+    "eslint-config-oclif": "^3.1",
+    "eslint-config-prettier": "^8",
+    "eslint-config-salesforce": "^0",
+    "eslint-config-salesforce-typescript": "^0",
+    "eslint-plugin-header": "^3",
+    "eslint-plugin-import": "^2",
+    "eslint-plugin-jsdoc": "^35",
+    "eslint-plugin-prettier": "^3",
+    "eslint-plugin-typescript": "^0",
+    "globby": "^11",
+    "husky": "^4",
+    "js2xmlparser": "^4.0.1",
+    "mocha": "^8",
+    "nyc": "^15",
+    "prettier": "^2",
+    "pretty-quick": "^3",
+    "readline-sync": "^1.4.10",
+    "sinon": "10.0.0",
+    "ts-node": "^10",
+    "typescript": "4",
+    "xml2js": "^0.4.23"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "files": [
+    "/bin",
+    "/lib",
+    "/messages",
+    "/npm-shrinkwrap.json",
+    "/oclif.manifest.json"
+  ],
+  "homepage": "https://github.com/dsl12/scdx",
+  "keywords": [
+    "salesforce",
+    "sfdx",
+    "sfdx-plugin"
+  ],
+  "license": "MIT",
+  "oclif": {
+    "commands": "./lib/commands",
+    "bin": "sfdx",
+    "topics": {
+      "hello": {
+        "description": "Commands to say hello."
+      }
+    },
+    "devPlugins": [
+      "@oclif/plugin-help"
+    ]
+  },
+  "repository": "dsl12/scdx",
+  "scripts": {
+    "build": "tsc -p .",
+    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "postpack": "rm -f oclif.manifest.json",
+    "posttest": "eslint src/**/*.ts test/**/*.ts",
+    "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",
+    "test": "nyc --extension .ts --require ts-node/register mocha --forbid-only \"test/**/*.test.ts\"",
+    "version": "oclif-dev readme && git add README.md"
+  }
+}
