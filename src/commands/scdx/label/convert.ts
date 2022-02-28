@@ -4,7 +4,6 @@
 /* eslint-disable complexity */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import * as path from 'path';
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
@@ -29,7 +28,7 @@ function convertLabels(sourcepath) {
       // permissionset
 
       if (!result) {
-        console.log(`Could not split ${pSetName}`);
+        console.log('Could not split labels');
         return;
       }
 

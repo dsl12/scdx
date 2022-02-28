@@ -2,7 +2,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
-import * as path from 'path';
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 const js2xmlparser = require('js2xmlparser');
@@ -33,7 +32,6 @@ function buildLabels(sourcepath) {
   fs.writeFileSync(sourcepath + '/CustomLabels.Labels-meta.xml' , xml);
 }
 
-const sortObjKeysAlphabetically = (obj) => Object.fromEntries(Object.entries(obj).sort());
 export default class LabelBuild extends SfdxCommand {
   public static description = 'Convert label xml into small chunks of json files';
 

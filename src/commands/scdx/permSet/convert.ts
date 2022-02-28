@@ -34,12 +34,12 @@ function convertPermissionSet(pSetName) {
       const psetObj = {};
 
       if (result.PermissionSet.licence) {
-        psetObj.licence = result.PermissionSet.licence;
+        psetObj['licence'] = result.PermissionSet.licence;
       }
 
-      psetObj.description = result.PermissionSet.description;
-      psetObj.label = result.PermissionSet.label;
-      psetObj.hasActivationRequired = result.PermissionSet.hasActivationRequired;
+      psetObj['description'] = result.PermissionSet.description;
+      psetObj['label'] = result.PermissionSet.label;
+      psetObj['hasActivationRequired'] = result.PermissionSet.hasActivationRequired;
 
       // permissionset
       fs.writeFileSync(permissionsetpath + '/' + pSetName + '.json', JSON.stringify(psetObj, null, 2));
