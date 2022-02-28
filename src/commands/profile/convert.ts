@@ -258,7 +258,7 @@ function convertProfile(profilename) {
         result.Profile.layoutAssignments.forEach(function (elem) {
           let key = elem.layout;
           if(elem.recordType) {
-              key += '-' + elem.recordType;
+              key += '-' + elem.recordType.replace('.','-');
           }
           fs.writeFileSync(profilepath + '/layoutAssignments/' + key + '.json', JSON.stringify(elem, null, 2));
         });
