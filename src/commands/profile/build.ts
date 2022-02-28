@@ -185,14 +185,17 @@ function buildProfile(profilename) {
 
   if (fs.existsSync(profilepath + '/userPermissions')) {
     fs.readdirSync(profilepath + '/userPermissions')
-      .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
+      .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
       .forEach((file) => {
+        console.log(file)
         profile.userPermissions.push(JSON.parse(fs.readFileSync(profilepath + '/userPermissions/' + file).toString()));
       });
   }
+ // console.log(profile.userPermissions);
 
   // sort profile attributes
   profile = sortObjKeysAlphabetically(profile);
+ // console.log(profile.userPermissions);
   const xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
   fs.writeFileSync(sourcepath + '/' + profilename + '.profile-meta.xml', xml);
 }

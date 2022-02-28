@@ -1,0 +1,4 @@
+{
+  "enabled": "false",
+  "flow": "Asset_or_Transaction_auto_submit_for_approval"
+}

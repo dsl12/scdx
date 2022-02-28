@@ -218,8 +218,9 @@ function convertProfile(profilename) {
         if (!Array.isArray(result.Profile.flowAccesses)) {
           result.Profile.flowAccesses = [result.Profile.flowAccesses];
         }
+        let key = result.Profile.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
         result.Profile.flowAccesses.forEach(function (elem) {
-          fs.writeFileSync(profilepath + '/flowAccesses/' + elem.flowName + '.json', JSON.stringify(elem, null, 2));
+          fs.writeFileSync(profilepath + '/flowAccesses/' + elem[key] + '.json', JSON.stringify(elem, null, 2));
         });
       }
       // pageAccesses
