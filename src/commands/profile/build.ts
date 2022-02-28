@@ -151,13 +151,25 @@ function buildProfile(profilename) {
   profile.layoutAssignments = [];
   if (fs.existsSync(profilepath + '/layoutAssignments')) {
     fs.readdirSync(profilepath + '/layoutAssignments')
-      .sort((a: any, b: any) => ( a.layout > b.layout ? -1 : 1))
+      .sort((a: any, b: any) => ( a.name > b.name ? -1 : 1))
       .forEach((file) => {
         profile.layoutAssignments.push(
           JSON.parse(fs.readFileSync(profilepath + '/layoutAssignments/' + file).toString())
         );
       });
   }
+
+  profile.layoutAssignments = profile.layoutAssignments.sort((a:any, b:any) => {
+         if (a.layout > b.layout) {
+             return 1;
+         } else if (b.layout > a.layout) {
+             return -1;
+         } else {
+             return a.recordType > b.recordType ? 1 : -1;
+         }
+      
+        })
+
   // pageAccesses
   profile.pageAccesses = [];
   if (fs.existsSync(profilepath + '/pageAccesses')) {
@@ -186,7 +198,6 @@ function buildProfile(profilename) {
     fs.readdirSync(profilepath + '/userPermissions')
       .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
       .forEach((file) => {
-        console.log(file)
         profile.userPermissions.push(JSON.parse(fs.readFileSync(profilepath + '/userPermissions/' + file).toString()));
       });
   }
@@ -194,9 +205,12 @@ function buildProfile(profilename) {
 
   // sort profile attributes
   profile = sortObjKeysAlphabetically(profile);
-  profile.layoutAssignments = sortObjKeysAlphabetically(profile.layoutAssignments);
+//   profile.layoutAssignments = sortObjKeysAlphabetically(profile.layoutAssignments);
  // console.log(profile.userPermissions);
-  const xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
+  var xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
+  while (xml.includes("'")) {
+    xml = xml.replace("'",'"');
+  }
   fs.writeFileSync(sourcepath + '/' + profilename + '.profile-meta.xml', xml);
 }
 
