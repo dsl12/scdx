@@ -66,6 +66,7 @@
 /lib
 /package-lock.json
 /tmp
+.history/*
 bower_components
 build/Release
 coverage

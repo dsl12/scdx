@@ -151,7 +151,7 @@ function buildProfile(profilename) {
   profile.layoutAssignments = [];
   if (fs.existsSync(profilepath + '/layoutAssignments')) {
     fs.readdirSync(profilepath + '/layoutAssignments')
-      .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
+      .sort((a: any, b: any) => ( a.layout > b.layout ? -1 : 1))
       .forEach((file) => {
         profile.layoutAssignments.push(
           JSON.parse(fs.readFileSync(profilepath + '/layoutAssignments/' + file).toString())
@@ -194,6 +194,7 @@ function buildProfile(profilename) {
 
   // sort profile attributes
   profile = sortObjKeysAlphabetically(profile);
+  profile.layoutAssignments = sortObjKeysAlphabetically(profile.layoutAssignments);
  // console.log(profile.userPermissions);
   const xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
   fs.writeFileSync(sourcepath + '/' + profilename + '.profile-meta.xml', xml);
