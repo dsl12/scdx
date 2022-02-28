@@ -151,7 +151,7 @@ function buildProfile(profilename) {
   profile.layoutAssignments = [];
   if (fs.existsSync(profilepath + '/layoutAssignments')) {
     fs.readdirSync(profilepath + '/layoutAssignments')
-      .sort((a: any, b: any) => ( a.name > b.name ? -1 : 1))
+      .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
       .forEach((file) => {
         profile.layoutAssignments.push(
           JSON.parse(fs.readFileSync(profilepath + '/layoutAssignments/' + file).toString())
@@ -159,16 +159,15 @@ function buildProfile(profilename) {
       });
   }
 
-  profile.layoutAssignments = profile.layoutAssignments.sort((a:any, b:any) => {
-         if (a.layout > b.layout) {
-             return 1;
-         } else if (b.layout > a.layout) {
-             return -1;
-         } else {
-             return a.recordType > b.recordType ? 1 : -1;
-         }
-      
-        })
+  profile.layoutAssignments = profile.layoutAssignments.sort((a: any, b: any) => {
+    if (a.layout > b.layout) {
+      return 1;
+    } else if (b.layout > a.layout) {
+      return -1;
+    } else {
+      return a.recordType > b.recordType ? 1 : -1;
+    }
+  });
 
   // pageAccesses
   profile.pageAccesses = [];
@@ -190,9 +189,6 @@ function buildProfile(profilename) {
   }
   // user permissions
   profile['userPermissions'] = [];
-//   if (profilesetting.userPermissions) {
-//     profile['userPermissions'] = profilesetting.userPermissions;
-//   }
 
   if (fs.existsSync(profilepath + '/userPermissions')) {
     fs.readdirSync(profilepath + '/userPermissions')
@@ -201,15 +197,12 @@ function buildProfile(profilename) {
         profile.userPermissions.push(JSON.parse(fs.readFileSync(profilepath + '/userPermissions/' + file).toString()));
       });
   }
- // console.log(profile.userPermissions);
 
   // sort profile attributes
   profile = sortObjKeysAlphabetically(profile);
-//   profile.layoutAssignments = sortObjKeysAlphabetically(profile.layoutAssignments);
- // console.log(profile.userPermissions);
-  var xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
+  let xml = js2xmlparser.parse('Profile', profile, { declaration: { encoding: 'UTF-8' } });
   while (xml.includes("'")) {
-    xml = xml.replace("'",'"');
+    xml = xml.replace("'", '"');
   }
   fs.writeFileSync(sourcepath + '/' + profilename + '.profile-meta.xml', xml);
 }
