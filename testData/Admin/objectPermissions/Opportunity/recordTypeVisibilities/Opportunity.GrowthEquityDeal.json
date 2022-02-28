@@ -1,0 +1,6 @@
+{
+  "default": "true",
+  "personAccountDefault": "true",
+  "recordType": "Opportunity.GrowthEquityDeal",
+  "visible": "true"
+}

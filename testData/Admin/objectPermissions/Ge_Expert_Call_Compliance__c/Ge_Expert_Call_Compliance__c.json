@@ -1,0 +1,9 @@
+{
+  "allowCreate": "true",
+  "allowDelete": "true",
+  "allowEdit": "true",
+  "allowRead": "true",
+  "modifyAllRecords": "true",
+  "object": "Ge_Expert_Call_Compliance__c",
+  "viewAllRecords": "true"
+}

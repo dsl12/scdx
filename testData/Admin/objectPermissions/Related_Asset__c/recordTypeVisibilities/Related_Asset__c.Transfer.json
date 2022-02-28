@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "Related_Asset__c.Transfer",
+  "visible": "true"
+}

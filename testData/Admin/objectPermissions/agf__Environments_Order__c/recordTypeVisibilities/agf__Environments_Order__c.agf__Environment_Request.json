@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "agf__Environments_Order__c.agf__Environment_Request",
+  "visible": "true"
+}

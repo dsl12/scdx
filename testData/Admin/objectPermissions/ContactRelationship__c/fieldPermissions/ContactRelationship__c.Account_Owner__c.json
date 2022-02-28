@@ -1,0 +1,5 @@
+{
+  "editable": "false",
+  "field": "ContactRelationship__c.Account_Owner__c",
+  "readable": "true"
+}

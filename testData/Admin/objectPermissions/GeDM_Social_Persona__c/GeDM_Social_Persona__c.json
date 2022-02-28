@@ -1,0 +1,9 @@
+{
+  "allowCreate": "true",
+  "allowDelete": "true",
+  "allowEdit": "true",
+  "allowRead": "true",
+  "modifyAllRecords": "true",
+  "object": "GeDM_Social_Persona__c",
+  "viewAllRecords": "true"
+}

@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "CCWs_Location__c.Event_Location",
+  "visible": "true"
+}

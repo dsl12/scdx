@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "Transaction__c.Ge_Account__c",
+  "readable": "true"
+}

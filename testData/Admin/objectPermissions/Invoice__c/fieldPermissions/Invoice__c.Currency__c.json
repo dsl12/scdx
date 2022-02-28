@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "Invoice__c.Currency__c",
+  "readable": "true"
+}

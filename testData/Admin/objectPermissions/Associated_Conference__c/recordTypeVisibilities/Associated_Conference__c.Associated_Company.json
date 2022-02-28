@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "Associated_Conference__c.Associated_Company",
+  "visible": "true"
+}

@@ -1,0 +1,9 @@
+{
+  "allowCreate": "true",
+  "allowDelete": "true",
+  "allowEdit": "true",
+  "allowRead": "true",
+  "modifyAllRecords": "true",
+  "object": "agf__ADM_Release_Stamp_Batch_ID__c",
+  "viewAllRecords": "true"
+}

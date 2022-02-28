@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "Interaction_Attendee__c.GIM_Analyst",
+  "visible": "true"
+}

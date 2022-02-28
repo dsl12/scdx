@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "agf__ADM_Feature_Freeze_Status__c.agf__RF_Sign_Off_Record",
+  "visible": "true"
+}

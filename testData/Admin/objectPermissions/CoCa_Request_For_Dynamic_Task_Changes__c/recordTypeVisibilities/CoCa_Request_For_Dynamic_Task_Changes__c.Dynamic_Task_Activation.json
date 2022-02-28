@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "CoCa_Request_For_Dynamic_Task_Changes__c.Dynamic_Task_Activation",
+  "visible": "true"
+}

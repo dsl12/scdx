@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "GeMM_Attendee__c.Attendee",
+  "visible": "true"
+}

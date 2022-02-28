@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "Transaction__c.ExternalId__c",
+  "readable": "true"
+}

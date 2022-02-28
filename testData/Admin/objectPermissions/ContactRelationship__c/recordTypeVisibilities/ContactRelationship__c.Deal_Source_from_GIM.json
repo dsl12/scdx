@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "ContactRelationship__c.Deal_Source_from_GIM",
+  "visible": "true"
+}

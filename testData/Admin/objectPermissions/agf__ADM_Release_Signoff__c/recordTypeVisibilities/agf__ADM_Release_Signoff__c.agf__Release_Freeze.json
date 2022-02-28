@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "agf__ADM_Release_Signoff__c.agf__Release_Freeze",
+  "visible": "true"
+}

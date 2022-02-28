@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "ProviderPricingContract__c.ProviderPricing",
+  "visible": "true"
+}

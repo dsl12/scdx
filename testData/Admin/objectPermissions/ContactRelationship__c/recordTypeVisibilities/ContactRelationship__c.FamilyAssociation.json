@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "ContactRelationship__c.FamilyAssociation",
+  "visible": "true"
+}

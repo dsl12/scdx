@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "GeDQ_CrunchBase_Staging__c.ContactUpdate",
+  "visible": "true"
+}

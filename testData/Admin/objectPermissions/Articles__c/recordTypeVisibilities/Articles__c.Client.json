@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "Articles__c.Client",
+  "visible": "true"
+}

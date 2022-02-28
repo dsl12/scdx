@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "TaxDetail__c.TaxState__c",
+  "readable": "true"
+}

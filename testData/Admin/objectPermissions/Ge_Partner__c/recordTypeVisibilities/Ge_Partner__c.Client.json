@@ -1,0 +1,6 @@
+{
+  "default": "true",
+  "personAccountDefault": "true",
+  "recordType": "Ge_Partner__c.Client",
+  "visible": "true"
+}

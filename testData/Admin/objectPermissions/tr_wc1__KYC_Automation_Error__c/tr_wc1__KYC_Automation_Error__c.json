@@ -1,0 +1,9 @@
+{
+  "allowCreate": "true",
+  "allowDelete": "true",
+  "allowEdit": "true",
+  "allowRead": "true",
+  "modifyAllRecords": "true",
+  "object": "tr_wc1__KYC_Automation_Error__c",
+  "viewAllRecords": "true"
+}

@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "Task.CompletedBy__c",
+  "readable": "true"
+}

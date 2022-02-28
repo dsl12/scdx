@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "AssociatedSector__c.Growth_Equity",
+  "visible": "true"
+}

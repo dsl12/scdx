@@ -1,0 +1,5 @@
+{
+  "editable": "true",
+  "field": "Transaction__c.Case__c",
+  "readable": "true"
+}

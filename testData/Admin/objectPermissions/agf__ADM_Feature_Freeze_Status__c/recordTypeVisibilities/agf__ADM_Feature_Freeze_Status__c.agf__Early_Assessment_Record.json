@@ -1,0 +1,5 @@
+{
+  "default": "false",
+  "recordType": "agf__ADM_Feature_Freeze_Status__c.agf__Early_Assessment_Record",
+  "visible": "false"
+}

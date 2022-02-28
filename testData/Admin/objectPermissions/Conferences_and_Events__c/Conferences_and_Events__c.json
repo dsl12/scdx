@@ -1,0 +1,9 @@
+{
+  "allowCreate": "true",
+  "allowDelete": "true",
+  "allowEdit": "true",
+  "allowRead": "true",
+  "modifyAllRecords": "true",
+  "object": "Conferences_and_Events__c",
+  "viewAllRecords": "true"
+}

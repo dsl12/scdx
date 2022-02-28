@@ -1,0 +1,5 @@
+{
+  "default": "true",
+  "recordType": "Usage_Tracker__c.Analyst_Meeting",
+  "visible": "true"
+}
