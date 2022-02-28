@@ -258,7 +258,7 @@ function convertPermissionSet(pSetName) {
 export default class PermSetConvert extends SfdxCommand {
   public static description = 'Convert permissionset xml into small chunks of json files';
 
-  public static examples = ['$ sfdx dxb:permissionset:convert', '$ sfdx dxb:permissionset:convert -p Admin -r src/permissionsets'];
+  public static examples = ['$ sfdx dxb:permissionset:convert', '$ sfdx dxb:permissionset:convert -p SuperUser -r src/permissionsets'];
 
   public static args = [{ name: 'file' }];
 

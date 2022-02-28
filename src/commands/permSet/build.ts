@@ -196,22 +196,22 @@ export default class PermissionSetBuild extends SfdxCommand {
 
   public static examples = [
     '$ sfdx dxb:PermissionSet:build',
-    '$ sfdx dxb:PermissionSet:build -p Admin -r src/PermissionSets',
+    '$ sfdx dxb:PermissionSet:build -p SuperUser -r src/PermissionSets',
   ];
 
   public static args = [{ name: 'file' }];
 
   protected static flagsConfig = {
-    PermissionSetname: flags.string({ char: 'p', description: 'PermissionSet name to be converted' }),
+    psetname: flags.string({ char: 'p', description: 'Permission Set name to be converted' }),
     sourcepath: flags.string({
       char: 'r',
-      description: 'Path to PermissionSet files',
-      default: 'force-app/main/default/PermissionSets',
+      description: 'Path to Permission Set files',
+      default: 'force-app/main/default/permissionsets',
     }),
   };
 
   public async run() {
-    let PermissionSetname = this.flags.PermissionSetname;
+    let PermissionSetname = this.flags.psetname;
     sourcepath = this.flags.sourcepath;
     if (PermissionSetname) {
       buildPermissionSet(PermissionSetname);
@@ -219,7 +219,7 @@ export default class PermissionSetBuild extends SfdxCommand {
       fs.readdirSync(sourcepath)
         .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
         .forEach((file) => {
-          if (file.indexOf('PermissionSet-meta.xml') >= 0) {
+          if (file.indexOf('permissionset-meta.xml') >= 0) {
             PermissionSetname = file.split('.')[0];
             buildPermissionSet(PermissionSetname);
           }
