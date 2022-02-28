@@ -1,7 +1,7 @@
 {
   "name": "scdx",
   "description": "SFDX plugins designed for Smart Cloud consultants",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": "dsl12",
   "bugs": "https://github.com/dsl12/scdx/issues",
   "dependencies": {
@@ -80,8 +80,13 @@
     "commands": "./lib/commands",
     "bin": "sfdx",
     "topics": {
-      "hello": {
-        "description": "Commands to say hello."
+      "scdx": {
+        "description": "A CLI plugin for the Salesforce CLI built for smart cloud consultants",
+        "subtopics": {
+					"profile": {
+            "description": "A set of functions for splitting profile meta xml files into smaller files"
+          }
+        }
       }
     },
     "devPlugins": [
