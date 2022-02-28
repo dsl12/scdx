@@ -85,7 +85,7 @@ function buildPermissionSet(PermissionSetname) {
         );
       });
   }
-  
+
   // customMetadataTypeAccesses
   PermissionSet.customMetadataTypeAccesses = [];
   if (fs.existsSync(PermissionSetpath + '/customMetadataTypeAccesses')) {
@@ -195,11 +195,11 @@ export default class PermissionSetBuild extends SfdxCommand {
   public static description = 'Convert PermissionSet xml into small chunks of json files';
 
   public static examples = [
-    '$ sfdx dxb:PermissionSet:build',
-    '$ sfdx dxb:PermissionSet:build -p SuperUser -r src/PermissionSets',
+    '$ sfdx scdx:PermissionSet:build',
+    '$ sfdx scdx:PermissionSet:build -p SuperUser -r src/PermissionSets',
   ];
 
-  public static args = [{ name: 'file' }];
+  public static args = [];
 
   protected static flagsConfig = {
     psetname: flags.string({ char: 'p', description: 'Permission Set name to be converted' }),

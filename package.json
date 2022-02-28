@@ -36,7 +36,6 @@
     "@typescript-eslint/parser": "^4",
     "chai": "^4",
     "cli-table": "0.3.1",
-    "dxb": "^1.7.8",
     "eslint": "^7",
     "eslint-config-oclif": "^3.1",
     "eslint-config-prettier": "^8",
@@ -92,7 +91,7 @@
   "repository": "dsl12/scdx",
   "scripts": {
     "build": "tsc -p .",
-    "lint": "eslint src/**/*.ts test/**/*.ts",
+    "lint": "eslint --fix src/**/*.ts test/**/*.ts",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint src/**/*.ts test/**/*.ts",
     "prepack": "rm -rf lib && tsc -b && oclif-dev manifest && oclif-dev readme",

@@ -211,9 +211,9 @@ const sortObjKeysAlphabetically = (obj) => Object.fromEntries(Object.entries(obj
 export default class ProfileBuild extends SfdxCommand {
   public static description = 'Convert profile xml into small chunks of json files';
 
-  public static examples = ['$ sfdx dxb:profile:build', '$ sfdx dxb:profile:build -p Admin -r src/profiles'];
+  public static examples = ['$ sfdx scdx:profile:build', '$ sfdx scdx:profile:build -p Admin -r src/profiles'];
 
-  public static args = [{ name: 'file' }];
+  public static args = [];
 
   protected static flagsConfig = {
     profilename: flags.string({ char: 'p', description: 'Profile name to be converted' }),

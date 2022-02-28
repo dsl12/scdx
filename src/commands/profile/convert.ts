@@ -218,7 +218,7 @@ function convertProfile(profilename) {
         if (!Array.isArray(result.Profile.flowAccesses)) {
           result.Profile.flowAccesses = [result.Profile.flowAccesses];
         }
-        let key = result.Profile.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
+        const key = result.Profile.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
         result.Profile.flowAccesses.forEach(function (elem) {
           fs.writeFileSync(profilepath + '/flowAccesses/' + elem[key] + '.json', JSON.stringify(elem, null, 2));
         });
@@ -257,8 +257,8 @@ function convertProfile(profilename) {
         }
         result.Profile.layoutAssignments.forEach(function (elem) {
           let key = elem.layout;
-          if(elem.recordType) {
-              key += '-' + elem.recordType.replace('.','-');
+          if (elem.recordType) {
+            key += '-' + elem.recordType.replace('.', '-');
           }
           fs.writeFileSync(profilepath + '/layoutAssignments/' + key + '.json', JSON.stringify(elem, null, 2));
         });
@@ -297,9 +297,9 @@ function convertProfile(profilename) {
 export default class PofileConvert extends SfdxCommand {
   public static description = 'Convert profile xml into small chunks of json files';
 
-  public static examples = ['$ sfdx dxb:profile:convert', '$ sfdx dxb:profile:convert -p Admin -r src/profiles'];
+  public static examples = ['$ sfdx scdx:profile:convert', '$ sfdx scdx:profile:convert -p Admin -r src/profiles'];
 
-  public static args = [{ name: 'file' }];
+  public static args = [];
 
   protected static flagsConfig = {
     profilename: flags.string({ char: 'p', description: 'Profile name to be converted' }),

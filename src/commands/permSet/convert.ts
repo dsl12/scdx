@@ -31,7 +31,7 @@ function convertPermissionSet(pSetName) {
       console.log('Something went wrong converting this permissionset.');
       console.log(err);
     } else if (result) {
-      var psetObj = {};
+      const psetObj = {};
 
       if (result.PermissionSet.licence) {
         psetObj.licence = result.PermissionSet.licence;
@@ -40,8 +40,6 @@ function convertPermissionSet(pSetName) {
       psetObj.description = result.PermissionSet.description;
       psetObj.label = result.PermissionSet.label;
       psetObj.hasActivationRequired = result.PermissionSet.hasActivationRequired;
-      
-
 
       // permissionset
       fs.writeFileSync(permissionsetpath + '/' + pSetName + '.json', JSON.stringify(psetObj, null, 2));
@@ -74,10 +72,13 @@ function convertPermissionSet(pSetName) {
           result.PermissionSet.classAccesses = [result.PermissionSet.classAccesses];
         }
         result.PermissionSet.classAccesses.forEach(function (elem) {
-          fs.writeFileSync(permissionsetpath + '/classAccesses/' + elem.apexClass + '.json', JSON.stringify(elem, null, 2));
+          fs.writeFileSync(
+            permissionsetpath + '/classAccesses/' + elem.apexClass + '.json',
+            JSON.stringify(elem, null, 2)
+          );
         });
       }
-      
+
       // customMetadataTypeAccesses
       if (result.PermissionSet.customMetadataTypeAccesses) {
         if (!fs.existsSync(permissionsetpath + '/customMetadataTypeAccesses')) {
@@ -150,7 +151,12 @@ function convertPermissionSet(pSetName) {
             fs.mkdirSync(permissionsetpath + '/objectPermissions/' + objectName + '/recordTypeVisibilities');
           }
           fs.writeFileSync(
-            permissionsetpath + '/objectPermissions/' + objectName + '/recordTypeVisibilities/' + elem.recordType + '.json',
+            permissionsetpath +
+              '/objectPermissions/' +
+              objectName +
+              '/recordTypeVisibilities/' +
+              elem.recordType +
+              '.json',
             JSON.stringify(elem, null, 2)
           );
         });
@@ -164,7 +170,10 @@ function convertPermissionSet(pSetName) {
           result.PermissionSet.customPermissions = [result.PermissionSet.customPermissions];
         }
         result.PermissionSet.customPermissions.forEach(function (elem) {
-          fs.writeFileSync(permissionsetpath + '/customPermissions/' + elem.name + '.json', JSON.stringify(elem, null, 2));
+          fs.writeFileSync(
+            permissionsetpath + '/customPermissions/' + elem.name + '.json',
+            JSON.stringify(elem, null, 2)
+          );
         });
       }
       // customSettingAccesses
@@ -205,7 +214,7 @@ function convertPermissionSet(pSetName) {
         if (!Array.isArray(result.PermissionSet.flowAccesses)) {
           result.PermissionSet.flowAccesses = [result.PermissionSet.flowAccesses];
         }
-        let key = result.PermissionSet.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
+        const key = result.PermissionSet.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
         result.PermissionSet.flowAccesses.forEach(function (elem) {
           fs.writeFileSync(permissionsetpath + '/flowAccesses/' + elem[key] + '.json', JSON.stringify(elem, null, 2));
         });
@@ -219,7 +228,10 @@ function convertPermissionSet(pSetName) {
           result.PermissionSet.pageAccesses = [result.PermissionSet.pageAccesses];
         }
         result.PermissionSet.pageAccesses.forEach(function (elem) {
-          fs.writeFileSync(permissionsetpath + '/pageAccesses/' + elem.apexPage + '.json', JSON.stringify(elem, null, 2));
+          fs.writeFileSync(
+            permissionsetpath + '/pageAccesses/' + elem.apexPage + '.json',
+            JSON.stringify(elem, null, 2)
+          );
         });
       }
       // tabVisibilities
@@ -234,7 +246,6 @@ function convertPermissionSet(pSetName) {
           fs.writeFileSync(permissionsetpath + '/tabSettings/' + elem.tab + '.json', JSON.stringify(elem, null, 2));
         });
       }
-      
 
       // userPermissions
       if (result.PermissionSet.userPermissions) {
@@ -249,7 +260,7 @@ function convertPermissionSet(pSetName) {
           fs.writeFileSync(permissionsetpath + '/userPermissions/' + key + '.json', JSON.stringify(elem, null, 2));
         });
       }
-      
+
       console.log('Converted:', pSetName);
     }
   });
@@ -258,9 +269,12 @@ function convertPermissionSet(pSetName) {
 export default class PermSetConvert extends SfdxCommand {
   public static description = 'Convert permissionset xml into small chunks of json files';
 
-  public static examples = ['$ sfdx dxb:permissionset:convert', '$ sfdx dxb:permissionset:convert -p SuperUser -r src/permissionsets'];
+  public static examples = [
+    '$ sfdx scdx:permissionset:convert',
+    '$ sfdx scdx:permissionset:convert -p SuperUser -r src/permissionsets',
+  ];
 
-  public static args = [{ name: 'file' }];
+  public static args = [];
 
   protected static flagsConfig = {
     psetname: flags.string({ char: 'p', description: 'Permission set name to be converted' }),
@@ -291,7 +305,7 @@ export default class PermSetConvert extends SfdxCommand {
     } else {
       fs.readdirSync(sourcepath).forEach((file) => {
         if (file.indexOf('permissionset-meta.xml') >= 0) {
-           pSetName = file.split('.')[0];
+          pSetName = file.split('.')[0];
           try {
             convertPermissionSet(pSetName);
           } catch (err) {
