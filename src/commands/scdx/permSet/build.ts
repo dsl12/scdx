@@ -6,9 +6,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 const js2xmlparser = require('js2xmlparser');
-let sourcepath;
 
-export function buildPermissionSet(PermissionSetname) {
+export function buildPermissionSet(sourcepath, PermissionSetname) {
   const PermissionSetpath = path.join(sourcepath, PermissionSetname);
   // PermissionSet
   const PermissionSetsetting = JSON.parse(
@@ -212,16 +211,16 @@ export default class PermissionSetBuild extends SfdxCommand {
 
   public async run() {
     let PermissionSetname = this.flags.psetname;
-    sourcepath = this.flags.sourcepath;
+    let sourcepath = this.flags.sourcepath;
     if (PermissionSetname) {
-      buildPermissionSet(PermissionSetname);
+      buildPermissionSet(sourcepath, PermissionSetname);
     } else {
       fs.readdirSync(sourcepath)
         .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
         .forEach((file) => {
           if (file.indexOf('permissionset-meta.xml') >= 0) {
             PermissionSetname = file.split('.')[0];
-            buildPermissionSet(PermissionSetname);
+            buildPermissionSet(sourcepath, PermissionSetname);
           }
         });
     }

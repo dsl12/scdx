@@ -25,7 +25,7 @@ export const hook: HookFunction = async function (options) {
       } else if (res.type.name == 'Profile') {
         buildProfile(res.xml.substring(0, res.xml.lastIndexOf('/')), res.name);
       }else if (res.type.name == 'PermissionSet') {
-        buildPermissiontSet(res.xml.substring(0, res.xml.lastIndexOf('/')), res.name);
+        buildPermissionSet(res.xml.substring(0, res.xml.lastIndexOf('/')), res.name);
 
       }
     }
