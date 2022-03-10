@@ -4,5 +4,6 @@
     "outDir": "lib",
     "rootDir": "src"
   },
-  "include": ["./src/**/*.ts"]
+  "module": "commonjs",
+  "include": ["./src/**/*.ts","./src/hooks/*.ts"]
 }

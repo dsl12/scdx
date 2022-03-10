@@ -78,6 +78,10 @@
   "license": "MIT",
   "oclif": {
     "commands": "./lib/commands",
+    "hooks": {
+      "postretrieve": "./src/hooks/postRetrieveTransform",
+      "predeploy": "./src/hooks/predeployTransform"
+    },
     "bin": "sfdx",
     "topics": {
       "scdx": {

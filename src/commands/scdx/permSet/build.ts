@@ -8,7 +8,7 @@ import { flags, SfdxCommand } from '@salesforce/command';
 const js2xmlparser = require('js2xmlparser');
 let sourcepath;
 
-function buildPermissionSet(PermissionSetname) {
+export function buildPermissionSet(PermissionSetname) {
   const PermissionSetpath = path.join(sourcepath, PermissionSetname);
   // PermissionSet
   const PermissionSetsetting = JSON.parse(

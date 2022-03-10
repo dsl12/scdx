@@ -10,10 +10,9 @@ import { flags, SfdxCommand } from '@salesforce/command';
 import { SfdxError } from '@salesforce/core';
 
 const xml2js = require('xml2js');
-let sourcepath;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function convertProfile(profilename) {
+export function convertProfile(sourcepath,profilename) {
   const profilepath = path.join(sourcepath, profilename);
   const data = fs.readFileSync(`${profilepath}.profile-meta.xml`, { encoding: 'utf-8' });
   console.log('Read file');
@@ -320,10 +319,10 @@ export default class PofileConvert extends SfdxCommand {
 
   public async run() {
     let profilename = this.flags.profilename;
-    sourcepath = this.flags.sourcepath;
+    let sourcepath = this.flags.sourcepath;
     if (profilename) {
       try {
-        convertProfile(profilename);
+        convertProfile(sourcepath,profilename);
       } catch (err) {
         console.log(`Could not convert ${profilename}`);
       }
@@ -332,7 +331,7 @@ export default class PofileConvert extends SfdxCommand {
         if (file.indexOf('profile-meta.xml') >= 0) {
           profilename = file.split('.')[0];
           try {
-            convertProfile(profilename);
+            convertProfile(sourcepath,profilename);
           } catch (err) {
             console.log(`Could not split ${profilename}`);
           }

@@ -6,9 +6,8 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
 const js2xmlparser = require('js2xmlparser');
-let sourcepath;
 
-function buildProfile(profilename) {
+export function buildProfile (sourcepath, profilename) {
   const profilepath = path.join(sourcepath, profilename);
   // profile
   const profilesetting = JSON.parse(fs.readFileSync(profilepath + '/' + profilename + '.json').toString());
@@ -226,16 +225,16 @@ export default class ProfileBuild extends SfdxCommand {
 
   public async run() {
     let profilename = this.flags.profilename;
-    sourcepath = this.flags.sourcepath;
+    let sourcepath = this.flags.sourcepath;
     if (profilename) {
-      buildProfile(profilename);
+      buildProfile(sourcepath, profilename);
     } else {
       fs.readdirSync(sourcepath)
         .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
         .forEach((file) => {
           if (file.indexOf('profile-meta.xml') >= 0) {
             profilename = file.split('.')[0];
-            buildProfile(profilename);
+            buildProfile(sourcepath,profilename);
           }
         });
     }

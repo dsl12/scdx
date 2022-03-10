@@ -12,7 +12,7 @@ import xml2js = require('xml2js');
 let sourcepath;
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-function convertLabels(sourcepath) {
+export function convertLabels(sourcepath) {
   const data = fs.readFileSync(`${sourcepath}/CustomLabels.Labels-meta.xml`, { encoding: 'utf-8' });
   console.log('Read file');
 
@@ -40,6 +40,7 @@ function convertLabels(sourcepath) {
     }
   });
 }
+
 
 export default class Label extends SfdxCommand {
   public static description = 'Convert Label xml into small chunks of json files';

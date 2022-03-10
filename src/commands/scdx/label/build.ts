@@ -4,11 +4,13 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import * as fs from 'fs';
 import { flags, SfdxCommand } from '@salesforce/command';
-const js2xmlparser = require('js2xmlparser');
+
+import * as js2xmlparser from 'js2xmlparser';
 let sourcepath;
 
-function buildLabels(sourcepath) {
-  
+export function buildLabels(sourcepath) {
+
+
   let CustomLabels: any = {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
   };
@@ -51,6 +53,7 @@ export default class LabelBuild extends SfdxCommand {
   };
 
   public async run() {
+
     sourcepath = this.flags.sourcepath;
     try {
       buildLabels(sourcepath);
