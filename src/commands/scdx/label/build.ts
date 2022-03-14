@@ -33,7 +33,7 @@ export function buildLabels(sourcepath) {
   while (xml.includes("'")) {
     xml = xml.replace("'", '"');
   }
-  fs.writeFileSync(sourcepath + '/CustomLabels.Labels-meta.xml', xml);
+  fs.writeFileSync(outputDirectory + '/CustomLabels.Labels-meta.xml', xml);
 }
 
 function allowedName(labelObj): boolean {

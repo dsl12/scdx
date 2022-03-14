@@ -1,7 +1,7 @@
 {
   "name": "scdx",
   "description": "SFDX plugins designed for Smart Cloud consultants",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "author": "dsl12",
   "bugs": "https://github.com/dsl12/scdx/issues",
   "dependencies": {
