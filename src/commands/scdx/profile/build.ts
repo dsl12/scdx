@@ -443,6 +443,7 @@ export default class ProfileBuild extends SfdxCommand {
         try {
           buildFromList(sourcepath, compList, profilename);
         } catch (err) {
+          // eslint-disable-next-line no-console
           console.error(err);
         }
       } else {
