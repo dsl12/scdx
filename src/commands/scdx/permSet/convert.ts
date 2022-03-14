@@ -12,10 +12,9 @@ import { SfdxError } from '@salesforce/core';
 const xml2js = require('xml2js');
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function convertPermissionSet(sourcepath,pSetName) {
+export function convertPermissionSet(sourcepath, pSetName) {
   const permissionsetpath = path.join(sourcepath, pSetName);
   const data = fs.readFileSync(`${permissionsetpath}.permissionset-meta.xml`, { encoding: 'utf-8' });
-  console.log('Read file');
   if (!fs.existsSync(permissionsetpath)) {
     fs.mkdirSync(permissionsetpath);
   }
@@ -294,10 +293,10 @@ export default class PermSetConvert extends SfdxCommand {
 
   public async run() {
     let pSetName = this.flags.psetname;
-    let sourcepath = this.flags.sourcepath
+    let sourcepath = this.flags.sourcepath;
     if (pSetName) {
       try {
-        convertPermissionSet(sourcepath,pSetName);
+        convertPermissionSet(sourcepath, pSetName);
       } catch (err) {
         console.log(`Could not convert ${pSetName}`);
       }
@@ -306,7 +305,7 @@ export default class PermSetConvert extends SfdxCommand {
         if (file.indexOf('permissionset-meta.xml') >= 0) {
           pSetName = file.split('.')[0];
           try {
-            convertPermissionSet(this.flags.sourcepath,pSetName);
+            convertPermissionSet(this.flags.sourcepath, pSetName);
           } catch (err) {
             console.log(`Could not split ${pSetName}`);
           }

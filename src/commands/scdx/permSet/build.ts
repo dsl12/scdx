@@ -1,3 +1,7 @@
+/* eslint-disable guard-for-in */
+/* eslint-disable complexity */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-prototype-builtins */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -20,18 +24,19 @@ export function buildPermissionSet(sourcepath, PermissionSetname) {
   let PermissionSet: any = {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
   };
-  if (PermissionSetsetting.custom) {
-    PermissionSet['custom'] = PermissionSetsetting.custom;
+  if (PermissionSetsetting.description) {
+    PermissionSet['description'] = PermissionSetsetting.description;
   }
   if (PermissionSetsetting.license) {
     PermissionSet['license'] = PermissionSetsetting.license;
   }
-  if (PermissionSetsetting.loginHours) {
-    PermissionSet['loginHours'] = PermissionSetsetting.loginHours;
+  if (PermissionSetsetting.hasActivationRequired) {
+    PermissionSet['hasActivationRequired'] = PermissionSetsetting.hasActivationRequired;
   }
-  if (PermissionSetsetting.loginIpRanges) {
-    PermissionSet['loginIpRanges'] = PermissionSetsetting.loginIpRanges;
+  if (PermissionSetsetting.label) {
+    PermissionSet['label'] = PermissionSetsetting.label;
   }
+
   // applicationVisibilities
   PermissionSet.applicationVisibilities = [];
   if (fs.existsSync(PermissionSetpath + '/applicationVisibilities')) {
@@ -193,12 +198,200 @@ export function buildPermissionSet(sourcepath, PermissionSetname) {
 }
 
 const sortObjKeysAlphabetically = (obj) => Object.fromEntries(Object.entries(obj).sort());
+
+export function buildPSetFromList(sourcepath: string, pSetName: string, pSetObj: Object) {
+  const returnProfile: any = {
+    '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
+  };
+
+  const metaDataTypes = Object.getOwnPropertyNames(pSetObj).sort();
+  const pSetPath = path.join(sourcepath, pSetName);
+  // base profile
+  if (!fs.existsSync(pSetPath + '/' + pSetName + '.json')) {
+    // eslint-disable-next-line no-console
+    console.error(`Base profile file not found for profile :${pSetName}`);
+    return null;
+  }
+  const profilesetting = JSON.parse(fs.readFileSync(pSetPath + '/' + pSetName + '.json').toString());
+
+  if (profilesetting.custom) {
+    returnProfile['custom'] = profilesetting.custom;
+  }
+  if (profilesetting.license) {
+    returnProfile['license'] = profilesetting.license;
+  }
+  if (profilesetting.loginHours) {
+    returnProfile['loginHours'] = profilesetting.loginHours;
+  }
+  if (profilesetting.loginIpRanges) {
+    returnProfile['loginIpRanges'] = profilesetting.loginIpRanges;
+  }
+
+  returnProfile.objectPermissions = [];
+  returnProfile.fieldPermissions = [];
+  returnProfile.recordTypeVisibilities = [];
+
+  for (const mType of metaDataTypes) {
+    if (mType === 'objectPermissions') {
+      // eslint-disable-next-line guard-for-in
+      for (const objName in pSetObj[mType]) {
+        for (const subMType in pSetObj[mType][objName]) {
+          if (subMType == 'base') {
+            const base = JSON.parse(fs.readFileSync(pSetObj[mType][objName][subMType], 'utf-8').toString());
+            returnProfile.objectPermissions.push(base);
+          } else {
+            for (const fPath of pSetObj[mType][objName][subMType]) {
+              const currentComponent = JSON.parse(fs.readFileSync(fPath, 'utf-8').toString());
+              returnProfile[mType].push(currentComponent);
+            }
+          }
+        }
+      }
+    } else {
+      returnProfile[mType] = [];
+
+      for (const fPath of pSetObj[mType].sort()) {
+        if (mType !== 'userPermissions') {
+          if (fs.existsSync(fPath)) {
+            const objToAdd = JSON.parse(fs.readFileSync(fPath, 'utf-8').toString());
+            returnProfile[mType].push(objToAdd);
+          } else {
+            // eslint-disable-next-line no-console
+            console.log('it doesnt exist: ' + fPath);
+          }
+        }
+      }
+
+      if (!returnProfile.hasOwnProperty('userPermissions')) {
+        returnProfile.userPermissions = [];
+      }
+
+      if (fs.existsSync(pSetPath + '/' + 'userPermissions')) {
+        fs.readdirSync(pSetPath + '/' + 'userPermissions')
+          .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
+          .forEach((file) => {
+            returnProfile.userPermissions.push(
+              JSON.parse(fs.readFileSync(pSetPath + '/userPermissions/' + file).toString())
+            );
+          });
+      }
+    }
+  }
+
+  return sortObjKeysAlphabetically(returnProfile);
+}
+
+export function buildFromList(sourcepath: string, components: string, PermissionSetname: string) {
+  const componentMap = constructComponentMap(components);
+
+  if (PermissionSetname) {
+    const profToDelete = [];
+
+    for (const profName in componentMap) {
+      if (profName !== PermissionSetname) {
+        profToDelete.push(profName);
+      }
+    }
+
+    for (const profName of profToDelete) {
+      delete componentMap[profName];
+    }
+  }
+
+  for (const prof in componentMap) {
+    const pSetObj = buildPSetFromList(sourcepath, prof, componentMap[prof]);
+
+    if (pSetObj) {
+      let xml = js2xmlparser.parse('PermissionSet', pSetObj, { declaration: { encoding: 'UTF-8' } });
+      while (xml.includes("'")) {
+        xml = xml.replace("'", '"');
+      }
+
+      // eslint-disable-next-line no-console
+      console.log('time to write!');
+
+      fs.writeFileSync(outputDirectory + '/' + prof + '.permissionset-meta.xml', xml);
+    }
+  }
+}
+
+function constructComponentMap(components: string) {
+  const returnC = {};
+  const paths = components.split(',');
+
+  paths.forEach((p) => {
+    const delimiter = 'permissionsets/';
+    const theIndex = p.lastIndexOf(delimiter);
+    const currPath = p.substring(theIndex + delimiter.length);
+    const basePath = p.substring(0, theIndex + delimiter.length);
+    const indexFirstSlash = currPath.indexOf('/');
+    const pSetName = currPath.substring(0, indexFirstSlash);
+    // eslint-disable-next-line no-console
+    // eslint-disable-next-line no-console
+    const subPath = currPath.substring(indexFirstSlash + 1);
+    let metaDataType = subPath.substring(0, subPath.indexOf('/'));
+    if (metaDataType === '') {
+      metaDataType = 'base';
+    }
+    const fileName = subPath.substring(subPath.indexOf('/') + 1);
+
+    let currentProfile = {};
+    if (returnC.hasOwnProperty(pSetName)) {
+      currentProfile = returnC[pSetName];
+    }
+
+    if (metaDataType === 'objectPermissions') {
+      let currOvrObjPerm = {};
+      if (currentProfile.hasOwnProperty(metaDataType)) {
+        currOvrObjPerm = currentProfile[metaDataType];
+      }
+
+      const objName = fileName.substring(0, fileName.indexOf('/'));
+      let curObjPerm = {};
+      if (currOvrObjPerm.hasOwnProperty(objName)) {
+        curObjPerm = currOvrObjPerm[objName];
+      }
+
+      const subFileName = fileName.substring(fileName.indexOf('/') + 1);
+
+      // We've already added teh base file so we only want field permissions and record type visibility
+      if (subFileName.includes('/')) {
+        const submetType = subFileName.substring(0, subFileName.indexOf('/'));
+        let subMetList = [];
+        if (curObjPerm.hasOwnProperty(submetType)) {
+          subMetList = curObjPerm[submetType];
+        }
+
+        subMetList.push(p.trim());
+        curObjPerm[submetType] = subMetList;
+        currOvrObjPerm[objName] = curObjPerm;
+        currentProfile[metaDataType] = currOvrObjPerm;
+      } else {
+        curObjPerm['base'] = basePath + pSetName + '/' + metaDataType + '/' + objName + '/' + objName + '.json';
+      }
+      currOvrObjPerm[objName] = curObjPerm;
+      currentProfile[metaDataType] = currOvrObjPerm;
+    } else {
+      let currentListMetadata = [];
+      if (currentProfile.hasOwnProperty(metaDataType)) {
+        currentListMetadata = currentProfile[metaDataType];
+      }
+      currentListMetadata.push(p.trim());
+      currentProfile[metaDataType] = currentListMetadata;
+    }
+
+    returnC[pSetName] = currentProfile;
+  });
+  return returnC;
+}
 export default class PermissionSetBuild extends SfdxCommand {
-  public static description = 'Convert PermissionSet xml into small chunks of json files';
+  public static description = 'Builds small json files into a permission set xml';
 
   public static examples = [
     '$ sfdx scdx:PermissionSet:build',
-    '$ sfdx scdx:PermissionSet:build -p SuperUser -r src/PermissionSets',
+    '$ sfdx scdx:PermissionSet:build -p SuperUser -r src/permissionsets',
+    '$ sfdx scdx:PermissionSet:build -p SuperUser -r src/permissionsets -o outputDirectory/permission sets',
+    '$ sfdx scdx:PermissionSet:build -p SuperUser -r src/permissionsets -c aFold/desiredComponents.txt',
   ];
 
   public static args = [];
@@ -212,18 +405,41 @@ export default class PermissionSetBuild extends SfdxCommand {
     }),
     components: flags.string({
       char: 'c',
-      description: 'Path to file containing  seperated paths to components to be built into profile',
+      description: 'Path to file containing  seperated paths to components to be built into Permission Set',
     }),
     output: flags.string({
       char: 'o',
-      description: 'Output path to write profiles to.',
+      description: 'Output path to write Permission Sets to.',
     }),
   };
 
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  // eslint-disable-next-line @typescript-eslint/require-await
   public async run() {
     let PermissionSetname = this.flags.psetname;
-    let sourcepath = this.flags.sourcepath;
-    if (PermissionSetname) {
+    const sourcepath = this.flags.sourcepath;
+    outputDirectory = this.flags.output ? this.flags.output : sourcepath;
+
+    if (this.flags.components) {
+      if (fs.existsSync(this.flags.components)) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        // eslint-disable-next-line prefer-const
+        let compList = fs.readFileSync(this.flags.components, 'utf-8');
+        try {
+          buildFromList(sourcepath, compList, PermissionSetname);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.error(err);
+        }
+      } else {
+        // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
+        const errorMessage = 'Component file not found :' + this.flags.components;
+        // To throw a non-bundle-based error:
+        throw new SfdxError(errorMessage, 'FileNotFound');
+      }
+
+      // components = constructComponentMap(this.flags.components);
+    } else if (PermissionSetname) {
       buildPermissionSet(sourcepath, PermissionSetname);
     } else {
       fs.readdirSync(sourcepath)
