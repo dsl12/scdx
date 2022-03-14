@@ -9,6 +9,7 @@ import * as path from 'path';
 import * as fs from 'fs';
 import { SfdxError } from '@salesforce/core';
 import { flags, SfdxCommand } from '@salesforce/command';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const js2xmlparser = require('js2xmlparser');
 
 let outputDirectory: string;
@@ -24,8 +25,8 @@ export function buildProfile(sourcepath: string, profilename: string): void {
   if (profilesetting.custom) {
     profile['custom'] = profilesetting.custom;
   }
-  if (profilesetting.userLicense) {
-    profile['userLicense'] = profilesetting.userLicense;
+  if (profilesetting.license) {
+    profile['license'] = profilesetting.license;
   }
   if (profilesetting.loginHours) {
     profile['loginHours'] = profilesetting.loginHours;
@@ -263,8 +264,8 @@ export function buildProfileFromList(sourcepath: string, profileName: string, pr
   if (profilesetting.custom) {
     returnProfile['custom'] = profilesetting.custom;
   }
-  if (profilesetting.userLicense) {
-    returnProfile['userLicense'] = profilesetting.userLicense;
+  if (profilesetting.license) {
+    returnProfile['license'] = profilesetting.license;
   }
   if (profilesetting.loginHours) {
     returnProfile['loginHours'] = profilesetting.loginHours;
@@ -297,13 +298,18 @@ export function buildProfileFromList(sourcepath: string, profileName: string, pr
       returnProfile[mType] = [];
 
       for (const fPath of profileObj[mType].sort()) {
-        if (fs.existsSync(fPath)) {
-          const objToAdd = JSON.parse(fs.readFileSync(fPath, 'utf-8').toString());
-          returnProfile[mType].push(objToAdd);
-        } else {
-          console.log('it doesnt exist!' + fPath);
+        if (mType !== 'userPermissions') {
+          if (fs.existsSync(fPath)) {
+            const objToAdd = JSON.parse(fs.readFileSync(fPath, 'utf-8').toString());
+            returnProfile[mType].push(objToAdd);
+          } else {
+            // eslint-disable-next-line no-console
+            console.log('it doesnt exist: ' + fPath);
+          }
         }
       }
+
+      console.log('time to do userpermissions');
     }
   }
 
@@ -382,9 +388,15 @@ function constructComponentMap(components: string) {
 
 const sortObjKeysAlphabetically = (obj) => Object.fromEntries(Object.entries(obj).sort());
 export default class ProfileBuild extends SfdxCommand {
-  public static description = 'Convert into small chunks of json files into a profile xml';
+  public static description = 'Builds into small chunks of json files into a profile xml';
 
-  public static examples = ['$ sfdx scdx:profile:build', '$ sfdx scdx:profile:build -p Admin -r src/profiles'];
+  public static examples = [
+    '$ sfdx scdx:profile:build',
+    '$ sfdx scdx:profile:build -r src/profiles',
+    '$ sfdx scdx:profile:build -p Admin -r src/profiles',
+    '$ sfdx scdx:profile:build -p Admin -r src/profiles -o outputDirectory/profiles',
+    '$ sfdx scdx:profile:build -p Admin -r src/profiles -o outputDirectory/profiles -c somePath/desiredComponents.txt',
+  ];
 
   public static args = [];
 

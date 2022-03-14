@@ -145,7 +145,7 @@ _See code: [src/commands/scdx/permSet/convert.ts](https://github.com/dsl12/scdx/
 
 ## `sfdx scdx:profile:build [-p <string>] [-r <string>] [-c <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
-Convert into small chunks of json files into a profile xml
+Builds into small chunks of json files into a profile xml
 
 ```
 USAGE
@@ -172,7 +172,10 @@ OPTIONS
 
 EXAMPLES
   $ sfdx scdx:profile:build
+  $ sfdx scdx:profile:build -r src/profiles
   $ sfdx scdx:profile:build -p Admin -r src/profiles
+  $ sfdx scdx:profile:build -p Admin -r src/profiles -o outputDirectory/profiles
+  $ sfdx scdx:profile:build -p Admin -r src/profiles -o outputDirectory/profiles -c somePath/desiredComponents.txt
 ```
 
 _See code: [src/commands/scdx/profile/build.ts](https://github.com/dsl12/scdx/blob/v1.0.1/src/commands/scdx/profile/build.ts)_

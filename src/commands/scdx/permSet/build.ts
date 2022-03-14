@@ -4,8 +4,11 @@
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 import * as path from 'path';
 import * as fs from 'fs';
+import { SfdxError } from '@salesforce/core';
+
 import { flags, SfdxCommand } from '@salesforce/command';
 const js2xmlparser = require('js2xmlparser');
+let outputDirectory: string;
 
 export function buildPermissionSet(sourcepath, PermissionSetname) {
   const PermissionSetpath = path.join(sourcepath, PermissionSetname);
@@ -20,8 +23,8 @@ export function buildPermissionSet(sourcepath, PermissionSetname) {
   if (PermissionSetsetting.custom) {
     PermissionSet['custom'] = PermissionSetsetting.custom;
   }
-  if (PermissionSetsetting.userLicense) {
-    PermissionSet['userLicense'] = PermissionSetsetting.userLicense;
+  if (PermissionSetsetting.license) {
+    PermissionSet['license'] = PermissionSetsetting.license;
   }
   if (PermissionSetsetting.loginHours) {
     PermissionSet['loginHours'] = PermissionSetsetting.loginHours;
@@ -206,6 +209,14 @@ export default class PermissionSetBuild extends SfdxCommand {
       char: 'r',
       description: 'Path to Permission Set files',
       default: 'force-app/main/default/permissionsets',
+    }),
+    components: flags.string({
+      char: 'c',
+      description: 'Path to file containing  seperated paths to components to be built into profile',
+    }),
+    output: flags.string({
+      char: 'o',
+      description: 'Output path to write profiles to.',
     }),
   };
 

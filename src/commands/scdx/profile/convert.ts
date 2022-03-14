@@ -12,7 +12,7 @@ import { SfdxError } from '@salesforce/core';
 const xml2js = require('xml2js');
 
 // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-export function convertProfile(sourcepath,profilename) {
+export function convertProfile(sourcepath, profilename) {
   const profilepath = path.join(sourcepath, profilename);
   const data = fs.readFileSync(`${profilepath}.profile-meta.xml`, { encoding: 'utf-8' });
   console.log('Read file');
@@ -36,7 +36,7 @@ export function convertProfile(sourcepath,profilename) {
         JSON.stringify(
           {
             custom: result.Profile.custom,
-            userLicense: result.Profile.userLicense,
+            license: result.Profile.license,
             loginHours: result.Profile.loginHours,
             loginIpRanges: result.Profile.loginIpRanges,
           },
@@ -322,7 +322,7 @@ export default class PofileConvert extends SfdxCommand {
     let sourcepath = this.flags.sourcepath;
     if (profilename) {
       try {
-        convertProfile(sourcepath,profilename);
+        convertProfile(sourcepath, profilename);
       } catch (err) {
         console.log(`Could not convert ${profilename}`);
       }
@@ -331,7 +331,7 @@ export default class PofileConvert extends SfdxCommand {
         if (file.indexOf('profile-meta.xml') >= 0) {
           profilename = file.split('.')[0];
           try {
-            convertProfile(sourcepath,profilename);
+            convertProfile(sourcepath, profilename);
           } catch (err) {
             console.log(`Could not split ${profilename}`);
           }
