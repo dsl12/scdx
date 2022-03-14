@@ -309,7 +309,19 @@ export function buildProfileFromList(sourcepath: string, profileName: string, pr
         }
       }
 
-      console.log('time to do userpermissions');
+      if (!returnProfile.hasOwnProperty('userPermissions')) {
+        returnProfile.userPermissions = [];
+      }
+
+      if (fs.existsSync(profilepath + '/' + 'userPermissions')) {
+        fs.readdirSync(profilepath + '/' + 'userPermissions')
+          .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
+          .forEach((file) => {
+            returnProfile.userPermissions.push(
+              JSON.parse(fs.readFileSync(profilepath + '/userPermissions/' + file).toString())
+            );
+          });
+      }
     }
   }
 
