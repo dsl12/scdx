@@ -1,9 +1,0 @@
-{
-  "allowCreate": "true",
-  "allowDelete": "true",
-  "allowEdit": "true",
-  "allowRead": "true",
-  "modifyAllRecords": "true",
-  "object": "CoRT_Team_Rota__c",
-  "viewAllRecords": "true"
-}

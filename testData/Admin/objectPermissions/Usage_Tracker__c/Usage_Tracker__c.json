@@ -1,9 +1,0 @@
-{
-  "allowCreate": "true",
-  "allowDelete": "true",
-  "allowEdit": "true",
-  "allowRead": "true",
-  "modifyAllRecords": "true",
-  "object": "Usage_Tracker__c",
-  "viewAllRecords": "true"
-}

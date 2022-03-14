@@ -1,9 +1,0 @@
-{
-  "allowCreate": "true",
-  "allowDelete": "true",
-  "allowEdit": "true",
-  "allowRead": "true",
-  "modifyAllRecords": "true",
-  "object": "Re_Reading_List__c",
-  "viewAllRecords": "true"
-}

@@ -1,5 +1,0 @@
-{
-  "default": "false",
-  "recordType": "Ge_ChangeRequest_to_Asset_or_Transaction__c.Request_Change_for_Transaction",
-  "visible": "true"
-}

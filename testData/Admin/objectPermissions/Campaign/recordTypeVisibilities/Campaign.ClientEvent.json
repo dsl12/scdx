@@ -1,6 +1,0 @@
-{
-  "default": "true",
-  "personAccountDefault": "true",
-  "recordType": "Campaign.ClientEvent",
-  "visible": "true"
-}
