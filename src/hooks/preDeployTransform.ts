@@ -6,7 +6,6 @@ import { SourceComponent } from '@salesforce/source-deploy-retrieve';
 import { buildLabels } from '../commands/scdx/label/build';
 import { buildProfile } from '../commands/scdx/profile/build';
 import { buildPermissionSet } from '../commands/scdx/permSet/build';
-const execSync = require('child_process').execSync;
 
 type HookFunction = (this: Hook.Context, options: HookOptions) => any;
 
