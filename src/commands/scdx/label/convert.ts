@@ -31,8 +31,10 @@ export function convertLabels(sourcepath) {
         console.log('Could not split labels');
         return;
       }
-
       if (result.CustomLabels.labels) {
+        if (!Array.isArray(result.CustomLabels.labels)) {
+          result.CustomLabels.labels = [result.CustomLabels.labels];
+        }
         result.CustomLabels.labels.forEach(function (elem) {
           fs.writeFileSync(sourcepath + '/' + elem.fullName + '.json', JSON.stringify(elem, null, 2));
         });
@@ -40,7 +42,6 @@ export function convertLabels(sourcepath) {
     }
   });
 }
-
 
 export default class Label extends SfdxCommand {
   public static description = 'Convert Label xml into small chunks of json files';
@@ -70,6 +71,7 @@ export default class Label extends SfdxCommand {
     try {
       convertLabels(sourcepath);
     } catch (err) {
+      console.log(err);
       console.log('Could not convert labels');
     }
   }

@@ -16,6 +16,11 @@ export function buildLabels(sourcepath) {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
   };
   CustomLabels.labels = [];
+
+  if (outputDirectory == null) {
+    outputDirectory = sourcepath;
+  }
+
   if (fs.existsSync(sourcepath)) {
     fs.readdirSync(sourcepath)
 
@@ -33,7 +38,7 @@ export function buildLabels(sourcepath) {
   while (xml.includes("'")) {
     xml = xml.replace("'", '"');
   }
-  fs.writeFileSync(outputDirectory + '/CustomLabels.Labels-meta.xml', xml);
+  fs.writeFileSync(outputDirectory + '/CustomLabels.labels-meta.xml', xml);
 }
 
 function allowedName(labelObj): boolean {

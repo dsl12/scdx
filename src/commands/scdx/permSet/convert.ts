@@ -214,7 +214,15 @@ export function convertPermissionSet(sourcepath, pSetName) {
         }
         const key = result.PermissionSet.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
         result.PermissionSet.flowAccesses.forEach(function (elem) {
-          fs.writeFileSync(permissionsetpath + '/flowAccesses/' + elem[key] + '.json', JSON.stringify(elem, null, 2));
+          let name = elem[key];
+          while (name.includes('\n')) {
+            name = name.replace('\n', '');
+          }
+          while (name.includes(';')) {
+            name = name.replace(';', '');
+          }
+          name = name.trim();
+          fs.writeFileSync(permissionsetpath + '/flowAccesses/' + name + '.json', JSON.stringify(elem, null, 2));
         });
       }
       // pageAccesses

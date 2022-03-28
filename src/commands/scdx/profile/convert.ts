@@ -219,7 +219,15 @@ export function convertProfile(sourcepath, profilename) {
         }
         const key = result.Profile.flowAccesses[0].flowName == null ? 'flow' : 'flowName';
         result.Profile.flowAccesses.forEach(function (elem) {
-          fs.writeFileSync(profilepath + '/flowAccesses/' + elem[key] + '.json', JSON.stringify(elem, null, 2));
+          let name = elem[key];
+          while (name.includes('\n')) {
+            name = name.replace('\n', '');
+          }
+          while (name.includes(';')) {
+            name = name.replace(';', '');
+          }
+          name = name.trim();
+          fs.writeFileSync(profilepath + '/flowAccesses/' + name + '.json', JSON.stringify(elem, null, 2));
         });
       }
       // pageAccesses

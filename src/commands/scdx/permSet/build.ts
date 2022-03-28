@@ -15,8 +15,15 @@ const js2xmlparser = require('js2xmlparser');
 let outputDirectory: string;
 
 export function buildPermissionSet(sourcepath, PermissionSetname) {
+  if (outputDirectory == null) {
+    outputDirectory = sourcepath;
+  }
+
   const PermissionSetpath = path.join(sourcepath, PermissionSetname);
   // PermissionSet
+  if (!fs.existsSync(PermissionSetpath + '/' + PermissionSetname + '.json')) {
+    return;
+  }
   const PermissionSetsetting = JSON.parse(
     fs.readFileSync(PermissionSetpath + '/' + PermissionSetname + '.json').toString()
   );
@@ -194,7 +201,7 @@ export function buildPermissionSet(sourcepath, PermissionSetname) {
   while (xml.includes("'")) {
     xml = xml.replace("'", '"');
   }
-  fs.writeFileSync(sourcepath + '/' + PermissionSetname + '.PermissionSet-meta.xml', xml);
+  fs.writeFileSync(outputDirectory + '/' + PermissionSetname + '.permissionset-meta.xml', xml);
 }
 
 const sortObjKeysAlphabetically = (obj) => Object.fromEntries(Object.entries(obj).sort());
@@ -203,16 +210,25 @@ export function buildPSetFromList(sourcepath: string, pSetName: string, pSetObj:
   const returnProfile: any = {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
   };
-
+  if (outputDirectory == null) {
+    outputDirectory = sourcepath;
+  }
   const metaDataTypes = Object.getOwnPropertyNames(pSetObj).sort();
   const pSetPath = path.join(sourcepath, pSetName);
   // base profile
   if (!fs.existsSync(pSetPath + '/' + pSetName + '.json')) {
     // eslint-disable-next-line no-console
-    console.error(`Base profile file not found for profile :${pSetName}`);
+    console.error(`Base permission set file not found for profile :${pSetName}`);
     return null;
   }
-  const profilesetting = JSON.parse(fs.readFileSync(pSetPath + '/' + pSetName + '.json').toString());
+
+  let profilesetting;
+
+  if (fs.existsSync(pSetPath + '/' + pSetName + '.json')) {
+    profilesetting = JSON.parse(fs.readFileSync(pSetPath + '/' + pSetName + '.json').toString());
+  } else {
+    return;
+  }
 
   if (profilesetting.custom) {
     returnProfile['custom'] = profilesetting.custom;
@@ -297,7 +313,6 @@ export function buildFromList(sourcepath: string, components: string, Permission
       delete componentMap[profName];
     }
   }
-
   for (const prof in componentMap) {
     const pSetObj = buildPSetFromList(sourcepath, prof, componentMap[prof]);
 
@@ -442,14 +457,22 @@ export default class PermissionSetBuild extends SfdxCommand {
     } else if (PermissionSetname) {
       buildPermissionSet(sourcepath, PermissionSetname);
     } else {
-      fs.readdirSync(sourcepath)
-        .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
-        .forEach((file) => {
-          if (file.indexOf('permissionset-meta.xml') >= 0) {
-            PermissionSetname = file.split('.')[0];
-            buildPermissionSet(sourcepath, PermissionSetname);
-          }
-        });
+      const thepath = path.resolve(sourcepath);
+      const direct = fs.opendirSync(thepath);
+      let nextFolder = direct.readSync();
+      const folders = [];
+      while (nextFolder != null) {
+        if (!nextFolder.name.includes('.')) {
+          folders.push(nextFolder.name);
+        }
+        nextFolder = direct.readSync();
+      }
+
+      direct.closeSync();
+
+      folders.forEach((file) => {
+        buildPermissionSet(sourcepath, file);
+      });
     }
   }
 }

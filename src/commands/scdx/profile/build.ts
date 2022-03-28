@@ -16,8 +16,16 @@ let outputDirectory: string;
 // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
 export function buildProfile(sourcepath: string, profilename: string): void {
   const profilepath = path.join(sourcepath, profilename);
+  if (!fs.existsSync(profilepath + '/' + profilename + '.json')) {
+    console.error('Cannot fine base profile');
+    console.log('Cannot fine base profile');
+    return;
+  }
   // profile
   const profilesetting = JSON.parse(fs.readFileSync(profilepath + '/' + profilename + '.json').toString());
+  if (outputDirectory == null) {
+    outputDirectory = sourcepath;
+  }
 
   let profile: any = {
     '@': { xmlns: 'http://soap.sforce.com/2006/04/metadata' },
@@ -239,8 +247,6 @@ export function buildFromList(sourcepath: string, components: string, profileNam
         xml = xml.replace("'", '"');
       }
 
-      console.log('time to write!');
-
       fs.writeFileSync(outputDirectory + '/' + prof + '.profile-meta.xml', xml);
     }
   }
@@ -456,14 +462,26 @@ export default class ProfileBuild extends SfdxCommand {
     } else if (profilename) {
       buildProfile(sourcepath, profilename);
     } else {
-      fs.readdirSync(sourcepath)
-        .sort((a: any, b: any) => (b.isDir - a.isDir || a.name > b.name ? -1 : 1))
-        .forEach((file) => {
-          if (file.indexOf('profile-meta.xml') >= 0) {
-            profilename = file.split('.')[0];
-            buildProfile(sourcepath, profilename);
-          }
-        });
+      const thepath = path.resolve(sourcepath);
+      const direct = fs.opendirSync(thepath);
+      let nextFolder = direct.readSync();
+      const folders = [];
+      while (nextFolder != null) {
+        if (!nextFolder.name.includes('.')) {
+          folders.push(nextFolder.name);
+        }
+        nextFolder = direct.readSync();
+      }
+      direct.closeSync();
+
+      folders.forEach((file) => {
+        try {
+          buildProfile(sourcepath, file);
+        } catch (err) {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        }
+      });
     }
   }
 }
