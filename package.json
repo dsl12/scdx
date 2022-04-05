@@ -1,12 +1,13 @@
 {
   "name": "scdx",
   "description": "SFDX plugins designed for Smart Cloud consultants",
-  "version": "1.2.0",
+  "version": "1.2.2",
   "author": "dsl12",
   "bugs": "https://github.com/dsl12/scdx/issues",
   "dependencies": {
     "@salesforce/command": "^4",
     "@salesforce/core": "^2",
+    "@salesforce/plugin-org": "^1.11.2",
     "@salesforce/plugin-user": "^1.7.0",
     "@salesforce/source-deploy-retrieve": "^2.2.0",
     "@salesforce/ts-types": "^1.5.20",

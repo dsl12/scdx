@@ -21,7 +21,7 @@ $ npm install -g scdx
 $ sfdx COMMAND
 running command...
 $ sfdx (-v|--version|version)
-scdx/1.2.0 darwin-x64 node-v12.16.1
+scdx/1.2.1 darwin-x64 node-v16.14.2
 $ sfdx --help [COMMAND]
 USAGE
   $ sfdx COMMAND
@@ -29,12 +29,40 @@ USAGE
 ```
 <!-- usagestop -->
 <!-- commands -->
+* [`sfdx scdx:installedPackage:clean [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxinstalledpackageclean--p-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:label:build [-r <string>] [-c <string>] [-l <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxlabelbuild--r-string--c-string--l-string--o-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:label:convert [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxlabelconvert--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:permSet:build [-p <string>] [-r <string>] [-c <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxpermsetbuild--p-string--r-string--c-string--o-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:permSet:convert [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxpermsetconvert--p-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:profile:build [-p <string>] [-r <string>] [-c <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxprofilebuild--p-string--r-string--c-string--o-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
 * [`sfdx scdx:profile:convert [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`](#sfdx-scdxprofileconvert--p-string--r-string---json---loglevel-tracedebuginfowarnerrorfataltracedebuginfowarnerrorfatal)
+
+## `sfdx scdx:installedPackage:clean [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
+
+Clean Installed package metadata from the activateRss issue
+
+```
+USAGE
+  $ sfdx scdx:installedPackage:clean [-p <string>] [-r <string>] [--json] [--loglevel 
+  trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]
+
+OPTIONS
+  -p, --packagename=packagename                                                     Package name
+
+  -r, --sourcepath=sourcepath                                                       [default: force-app/main/default/ins
+                                                                                    talledPackages] Path to installed
+                                                                                    package files
+
+  --json                                                                            format output as json
+
+  --loglevel=(trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL)  [default: warn] logging level for
+                                                                                    this command invocation
+
+EXAMPLE
+  $ sfdx scdx:InstalledPackage:clean
+```
+
+_See code: [src/commands/scdx/installedPackage/clean.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/installedPackage/clean.ts)_
 
 ## `sfdx scdx:label:build [-r <string>] [-c <string>] [-l <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -68,7 +96,7 @@ EXAMPLES
   $ sfdx scdx:label:build  -r src/labels
 ```
 
-_See code: [src/commands/scdx/label/build.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/label/build.ts)_
+_See code: [src/commands/scdx/label/build.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/label/build.ts)_
 
 ## `sfdx scdx:label:convert [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -93,7 +121,7 @@ EXAMPLES
   $ sfdx scdx:permissionset:convert -r src/labels
 ```
 
-_See code: [src/commands/scdx/label/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/label/convert.ts)_
+_See code: [src/commands/scdx/label/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/label/convert.ts)_
 
 ## `sfdx scdx:permSet:build [-p <string>] [-r <string>] [-c <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -112,7 +140,7 @@ OPTIONS
   -o, --output=output                                                               Output path to write Permission Sets
                                                                                     to.
 
-  -p, --psetname=psetname                                                           Permission Set name to be converted
+  -p, --psetname=psetname                                                           Permission Set name to be built
 
   -r, --sourcepath=sourcepath                                                       [default: force-app/main/default/per
                                                                                     missionsets] Path to Permission Set
@@ -130,7 +158,7 @@ EXAMPLES
   $ sfdx scdx:PermissionSet:build -p SuperUser -r src/permissionsets -c aFold/desiredComponents.txt
 ```
 
-_See code: [src/commands/scdx/permSet/build.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/permSet/build.ts)_
+_See code: [src/commands/scdx/permSet/build.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/permSet/build.ts)_
 
 ## `sfdx scdx:permSet:convert [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -158,7 +186,7 @@ EXAMPLES
   $ sfdx scdx:permissionset:convert -p SuperUser -r src/permissionsets
 ```
 
-_See code: [src/commands/scdx/permSet/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/permSet/convert.ts)_
+_See code: [src/commands/scdx/permSet/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/permSet/convert.ts)_
 
 ## `sfdx scdx:profile:build [-p <string>] [-r <string>] [-c <string>] [-o <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -195,7 +223,7 @@ EXAMPLES
   $ sfdx scdx:profile:build -p Admin -r src/profiles -o outputDirectory/profiles -c somePath/desiredComponents.txt
 ```
 
-_See code: [src/commands/scdx/profile/build.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/profile/build.ts)_
+_See code: [src/commands/scdx/profile/build.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/profile/build.ts)_
 
 ## `sfdx scdx:profile:convert [-p <string>] [-r <string>] [--json] [--loglevel trace|debug|info|warn|error|fatal|TRACE|DEBUG|INFO|WARN|ERROR|FATAL]`
 
@@ -223,7 +251,7 @@ EXAMPLES
   $ sfdx scdx:profile:convert -p Admin -r src/profiles
 ```
 
-_See code: [src/commands/scdx/profile/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.0/src/commands/scdx/profile/convert.ts)_
+_See code: [src/commands/scdx/profile/convert.ts](https://github.com/dsl12/scdx/blob/v1.2.1/src/commands/scdx/profile/convert.ts)_
 <!-- commandsstop -->
 <!-- debugging-your-plugin -->
 # Debugging your plugin

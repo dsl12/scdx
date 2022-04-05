@@ -31,7 +31,12 @@ export const hook: HookFunction = async function (options) {
     },
   };
   let runHookOverall = false;
-
+  let runHookOverall1 = true;
+  if (runHookOverall && runHookOverall1) {
+    // return;
+  } else {
+    return;
+  }
   if (!options.result || options.result.length == 0) {
     return;
   } else {

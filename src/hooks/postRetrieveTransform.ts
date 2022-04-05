@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { Command, Hook } from '@oclif/config';
 import { FileResponse } from '@salesforce/source-deploy-retrieve';
 import { convertLabels } from '../commands/scdx/label/convert';
+import { cleanPackage } from '../commands/scdx/installedPackage/clean';
 import { convertProfile } from '../commands/scdx/profile/convert';
 import { convertPermissionSet } from '../commands/scdx/permSet/convert';
 type HookFunction = (this: Hook.Context, options: HookOptions) => any;
@@ -29,8 +30,13 @@ export const hook: HookFunction = async function (options) {
       CustomLabels: true,
     },
   };
+  let runHookOverall1 = true;
   let runHookOverall = false;
-
+  if (runHookOverall && runHookOverall1) {
+    // return;
+  } else {
+    return;
+  }
   if (!options.result) {
     return;
   } else {
@@ -61,19 +67,18 @@ export const hook: HookFunction = async function (options) {
 
   if (runHookOverall === true) {
     for (const f of options.result) {
-      console.log(f.type);
       if (f.type == 'CustomLabels' && currentScript[f.type] === true) {
         let fPath = f.filePath;
         fPath = f.filePath.substring(0, f.filePath.lastIndexOf('/'));
         convertLabels(fPath);
       } else if (f.type == 'Profile' && currentScript[f.type] === true) {
-        console.log('hereasdasdasd');
-
         const sourcePath = f.filePath.substring(0, f.filePath.lastIndexOf('/'));
         convertProfile(sourcePath, f.fullName);
       } else if (f.type == 'PermissionSet' && currentScript[f.type] === true) {
         const sourcePath = f.filePath.substring(0, f.filePath.lastIndexOf('/'));
         convertPermissionSet(sourcePath, f.fullName);
+      } else if (f.type == 'InstalledPackage') {
+        cleanPackage(f.filePath);
       }
     }
   }

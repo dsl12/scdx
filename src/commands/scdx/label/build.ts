@@ -23,7 +23,6 @@ export function buildLabels(sourcepath) {
 
   if (fs.existsSync(sourcepath)) {
     fs.readdirSync(sourcepath)
-
       .sort((a: any, b: any) => (a.name > b.name ? -1 : 1))
       .filter((f) => f.includes('.json'))
       .forEach((file) => {
@@ -32,13 +31,13 @@ export function buildLabels(sourcepath) {
           CustomLabels.labels.push(jsonLabel);
         }
       });
-  }
 
-  let xml = js2xmlparser.parse('CustomLabels', CustomLabels, { declaration: { encoding: 'UTF-8' } });
-  while (xml.includes("'")) {
-    xml = xml.replace("'", '"');
+    let xml = js2xmlparser.parse('CustomLabels', CustomLabels, { declaration: { encoding: 'UTF-8' } });
+    while (xml.includes("'")) {
+      xml = xml.replace("'", '"');
+    }
+    fs.writeFileSync(outputDirectory + '/CustomLabels.labels-meta.xml', xml);
   }
-  fs.writeFileSync(outputDirectory + '/CustomLabels.labels-meta.xml', xml);
 }
 
 function allowedName(labelObj): boolean {

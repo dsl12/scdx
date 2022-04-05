@@ -412,7 +412,7 @@ export default class PermissionSetBuild extends SfdxCommand {
   public static args = [];
 
   protected static flagsConfig = {
-    psetname: flags.string({ char: 'p', description: 'Permission Set name to be converted' }),
+    psetname: flags.string({ char: 'p', description: 'Permission Set name to be built' }),
     sourcepath: flags.string({
       char: 'r',
       description: 'Path to Permission Set files',
